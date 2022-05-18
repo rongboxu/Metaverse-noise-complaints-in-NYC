@@ -3,7 +3,7 @@ const app = express();
 const port = 8723;
 const db = require("./conn")
 
-// 解决跨域
+// Solve cross-domain problems
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -18,7 +18,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// 获取时间范围
+// get time range
 app.get("/getDateInterval", async (req, res) => {
   let sql = "select MIN(CONCAT(year,'-',month)) start , MAX(CONCAT(year,'-',month)) end from noise_complain ;"
   let result = await db.query(sql, [])
@@ -31,7 +31,7 @@ app.get("/getDateInterval", async (req, res) => {
   });
 });
 
-// 获取噪音数据
+// Get noise data
 app.get("/getNoiseDate", async (req, res) => {
   const { year, month } = req.query;
   let sql = "select * from noise_complain where year = ? and month = ? ;"
@@ -40,7 +40,7 @@ app.get("/getNoiseDate", async (req, res) => {
 
   const resData = {}
 
-  // 数据zipcode映射
+  // Data zipcode mapping
   for (const item of result) {
     resData[item.zipcode] = item.unique_key
   }
